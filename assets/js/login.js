@@ -60,25 +60,38 @@ $(function(){//入口函数
     })
 
     // 监听登录表单的提交事件
-    $('#form_login').submit(function(){
+    $('#form_login').submit(function(e){
         // 阻止表单的默认提交行为
+      
+         e.preventDefault();
         $.ajax({
-            method:'POST',
+           
             url:'/api/login',
+            method:'POST',
             // 快速获取表单中的数据
             data:$(this).serialize(),
             success:function(res){
                 if(res.status !== 0){
-                    return layer.msg(res.message)
+                  return layer.msg('登录失败')
+                  
+                  
                 }
-                layer.msg('登录失败')
-                // 跳到后台主页
-                location.href = ''
-           
-
+               layer.msg('登录成功')
+            //    将得到的token 字符串 ，保存到
+           //   localStorage中 用到去取
+           localStorage.setItem('token', res.token)
+             
+               
+                //console.log(res.token);
+                // 跳转到首页
+                location.href = '/index.html'
+                
             }
+            
            
         })
     })
+
+   
 
 })
